@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!-- Documento HTML5 -->
+<html lang="es">
+<!-- Idioma español: accesibilidad y corrector del navegador -->
+<head>
+<meta charset="utf-8">
+<!-- Codificación para tildes y la ñ -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Ancho real en móvil, sin esto no funcionan las media queries -->
+<title>Sede electrónica · Ministerio de Trámites Previos y Posteriores</title>
+<link rel="stylesheet" href="styles.css">
+<!-- Toda la apariencia y la lógica viven en el CSS -->
+</head>
+<body>
+
+<!-- MOTOR DE ESTADO SIN JAVASCRIPT -->
+<!-- Radios ocultos del mismo grupo "estado": solo uno está marcado. Pulsar un <label for="..."> marca su radio y el CSS (selector ~) muestra la pantalla correspondiente. -->
+<!-- Clase e-xxx = qué pantalla muestra. Clase lap-N = vuelta del circuito (0, 1, 2; el 3 es el final). -->
+<input class="estado e-portada lap-0" type="radio" name="estado" id="e-portada" checked>
+<input class="estado e-form lap-0" type="radio" name="estado" id="e-form-0">
+<input class="estado e-v1 lap-0" type="radio" name="estado" id="e-v1-0">
+<input class="estado e-v2 lap-0" type="radio" name="estado" id="e-v2-0">
+<input class="estado e-v3 lap-0" type="radio" name="estado" id="e-v3-0">
+<input class="estado e-form lap-1" type="radio" name="estado" id="e-form-1">
+<input class="estado e-v1 lap-1" type="radio" name="estado" id="e-v1-1">
+<input class="estado e-v2 lap-1" type="radio" name="estado" id="e-v2-1">
+<input class="estado e-v3 lap-1" type="radio" name="estado" id="e-v3-1">
+<input class="estado e-form lap-2" type="radio" name="estado" id="e-form-2">
+<input class="estado e-v1 lap-2" type="radio" name="estado" id="e-v1-2">
+<input class="estado e-v2 lap-2" type="radio" name="estado" id="e-v2-2">
+<input class="estado e-v3 lap-2" type="radio" name="estado" id="e-v3-2">
+<input class="estado e-final lap-3" type="radio" name="estado" id="e-final">
+<input class="estado e-epilogo lap-3" type="radio" name="estado" id="e-epilogo">
+<!-- Casilla oculta para el aviso de cookies -->
+<input class="estado" type="checkbox" id="cookies">
+
+<div class="sede">
+
+  <!-- Cabecera institucional con escudo dibujado en CSS (genérico, sin marcas reales) -->
+  <header class="cabecera">
+    <div class="escudo" role="img" aria-label="Escudo genérico"></div>
+    <div>
+      <p class="organismo">Ministerio de Trámites Previos y Posteriores</p>
+      <p class="sede-nombre">Sede electrónica</p>
+    </div>
+  </header>
+
+  <!-- Menú principal: enlaces decorativos -->
+  <nav class="menu" aria-label="Principal">
+    <a href="#">Inicio</a><a href="#">Servicios</a><a href="#">Cita previa</a><a href="#">Ayuda</a>
+  </nav>
+
+  <!-- Migas de pan -->
+  <p class="migas">Inicio / Servicios / Documentación personal / Cita previa para DNI</p>
+
+  <div class="cuerpo">
+    <main>
+
+      <!-- PANTALLA 0: portada -->
+      <section class="pantalla pantalla-portada">
+        <h1>Cita previa para el Documento Nacional de Identidad</h1>
+        <p>Desde esta sede puede solicitar cita para la expedición de su DNI de forma rápida, sencilla y gratuita.</p>
+        <label for="e-form-0" class="boton">Solicitar cita previa para DNI</label>
+      </section>
+
+      <!-- PANTALLA 1: formulario de identificación (se repite en cada vuelta) -->
+      <section class="pantalla pantalla-form">
+        <h1>Identificación del solicitante</h1>
+        <!-- Mensajes que cambian según la vuelta (clases l1 y l2) -->
+        <p class="devuelto l1">Su expediente ha sido devuelto por no constar el DNI del solicitante. Intento 2 de 3.</p>
+        <p class="devuelto l2">Su expediente ha sido devuelto por segunda vez por el mismo motivo. Intento 3 de 3.</p>
+        <form action="#">
+          <!-- Campo 1: pide el DNI para pedir el DNI -->
+          <div class="campo">
+            <label for="dni">Número de DNI *</label>
+            <input id="dni" type="text" required pattern="[0-9]{8}[A-Za-z]" placeholder="12345678Z">
+            <small>Necesario para solicitar la cita de su DNI.</small>
+          </div>
+          <!-- Campo 2: la casilla que se contradice a sí misma -->
+          <div class="campo marca">
+            <input id="sin-dni" type="checkbox">
+            <label for="sin-dni">No dispongo de DNI</label>
+            <small class="msg-sin-dni">Para declarar que no dispone de DNI, identifíquese con su DNI.</small>
+          </div>
+          <!-- Campo 3: min mayor que max, nunca puede ser válido -->
+          <div class="campo">
+            <label for="nac">Fecha de nacimiento *</label>
+            <input id="nac" type="date" required min="2100-01-01" max="1900-01-01">
+            <small>Debe ser anterior a su fecha de nacimiento.</small>
+          </div>
+          <!-- Campo 4: obligatorio (required) y prohibido (maxlength=0) a la vez -->
+          <div class="campo">
+            <label for="obs">Observaciones *</label>
+            <textarea id="obs" rows="2" required maxlength="0"></textarea>
+            <small>Campo obligatorio. Este campo no admite contenido.</small>
+          </div>
+          <!-- Botón que huye: una versión por vuelta, la vuelta 3 solo cambia el texto -->
+          <div class="zona">
+            <label for="e-v1-0" class="boton huye l0"><span class="t1">Enviar</span><span class="t2">Quizá más tarde</span></label>
+            <label for="e-v1-1" class="boton huye l1"><span class="t1">Enviar</span><span class="t2">Casi</span></label>
+            <label for="e-v1-2" class="boton huye l2"><span class="t1">Enviar</span><span class="t2">Casi</span></label>
+          </div>
+        </form>
+      </section>
+
+      <!-- PANTALLA 2: certificado de no tener certificado -->
+      <section class="pantalla pantalla-v1">
+        <h1>Trámite previo 1 de 3: certificado de no disponer de certificado</h1>
+        <p>Antes de continuar, debe acreditar que no dispone de certificado digital. Para expedir el certificado de no disponer de certificado, adjunte copia compulsada de su DNI.</p>
+        <label for="e-v2-0" class="boton l0">Adjuntar copia del DNI</label>
+        <label for="e-v2-1" class="boton l1">Adjuntar copia del DNI</label>
+        <label for="e-v2-2" class="boton l2">Adjuntar copia del DNI</label>
+      </section>
+
+      <!-- PANTALLA 3: volante de empadronamiento -->
+      <section class="pantalla pantalla-v2">
+        <h1>Trámite previo 2 de 3: volante de empadronamiento</h1>
+        <p>El volante se obtiene en el Padrón Municipal de Habitantes, cuyo acceso requiere identificación mediante DNI. Si no dispone de DNI, el padrón no le reconoce como habitante y el volante será denegado de oficio.</p>
+        <label for="e-v3-0" class="boton l0">Solicitar volante</label>
+        <label for="e-v3-1" class="boton l1">Solicitar volante</label>
+        <label for="e-v3-2" class="boton l2">Solicitar volante</label>
+      </section>
+
+      <!-- PANTALLA 4: justificante de cita previa; en la vuelta 3 desemboca en el final -->
+      <section class="pantalla pantalla-v3">
+        <h1>Trámite previo 3 de 3: justificante de cita previa</h1>
+        <p>Para solicitar cita previa es imprescindible aportar el justificante de haber solicitado cita previa. El justificante se expide al solicitar la cita.</p>
+        <label for="e-form-1" class="boton l0">Solicitar cita previa</label>
+        <label for="e-form-2" class="boton l1">Solicitar cita previa</label>
+        <label for="e-final" class="boton l2">Solicitar cita previa</label>
+      </section>
+
+      <!-- PANTALLA 5: resolución final -->
+      <section class="pantalla pantalla-final">
+        <article class="resolucion">
+          <h1>Resolución de la Subdirección General de Citas Concedidas con Anterioridad</h1>
+          <p>Visto el expediente de solicitud de cita para la expedición del DNI, y comprobado que el solicitante ha cumplimentado todos los trámites previos de los que no puede disponer, esta Subdirección resuelve conceder la cita solicitada.</p>
+          <p>La cita queda fijada para el 31 de diciembre del año anterior a la solicitud, a las 25:00 horas, en la ventanilla número 0.</p>
+          <p>La ventanilla número 0 no existe, por lo que la presente resolución queda sin efecto.</p>
+          <p>Contra esta resolución cabe recurso de alzada, previa identificación con DNI.</p>
+        </article>
+        <label for="e-epilogo" class="boton">Volver a empezar</label>
+      </section>
+
+      <!-- PANTALLA 6: epílogo, sin salida -->
+      <section class="pantalla pantalla-epilogo">
+        <article class="resolucion">
+          <h1>Diligencia de cierre</h1>
+          <p>Su solicitud de volver a empezar ha sido admitida a trámite. Al no haber llegado a empezar, se le tiene por no empezado y, en consecuencia, por empezado.</p>
+          <p>Para continuar el procedimiento, presente su DNI.</p>
+          <p>Fin del expediente.</p>
+        </article>
+      </section>
+
+    </main>
+
+    <!-- Lateral: el aviso de estado que no se corresponde con la realidad -->
+    <aside class="lateral">
+      <h2>Estado del servicio</h2>
+      <p class="estado-ok">Operativo con normalidad</p>
+      <p>Horario de atención: de lunes a viernes, de 9:00 a 14:00 horas, salvo que el solicitante carezca de DNI.</p>
+    </aside>
+  </div>
+
+  <!-- Aviso de cookies: ambos botones marcan la misma casilla -->
+  <div class="cookies">
+    <p>Utilizamos cookies propias y de terceros. Para rechazarlas es necesario aceptar su uso.</p>
+    <label for="cookies" class="boton">Aceptar todas</label>
+    <label for="cookies" class="boton claro">Rechazar</label>
+  </div>
+
+  <!-- Pie legal -->
+  <footer class="pie">
+    <a href="#">Aviso legal</a><a href="#">Accesibilidad</a><a href="#">Mapa de la sede</a><a href="#">Política de cookies</a>
+    <p>Ministerio de Trámites Previos y Posteriores. Organismo ficticio, cualquier parecido con la realidad es un trámite pendiente.</p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+/* ========== VARIABLES: colores y espaciados en un único sitio ========== */
+:root {
+  --azul: #14284b;      /* color institucional principal */
+  --granate: #7a1f2b;   /* errores y avisos */
+  --oro: #a8832a;       /* detalle del escudo */
+  --fondo: #e9edf2;     /* fondo general */
+  --papel: #ffffff;     /* tarjetas y formularios */
+  --tinta: #1d2433;     /* texto */
+  --gris: #5b6578;      /* texto secundario */
+  --ok: #2f7d4f;        /* "operativo con normalidad" */
+  --esp: 1rem;          /* espaciado base */
+}
+
+/* ========== BASE ========== */
+*, *::before, *::after { box-sizing: border-box; }   /* el padding no agranda las cajas */
+body {
+  margin: 0;                                          /* quita el margen por defecto */
+  background: var(--fondo);                           /* fondo gris azulado */
+  color: var(--tinta);                                /* color del texto */
+  font: 1rem/1.6 "Segoe UI", system-ui, sans-serif;   /* tipografía sobria de cuerpo */
+}
+h1, h2, .organismo { font-family: Georgia, "Times New Roman", serif; color: var(--azul); }  /* serif de documento oficial */
+h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 var(--esp); }  /* títulos de pantalla */
+a { color: var(--azul); }                             /* enlaces institucionales */
+.estado { display: none; }                            /* los radios y la casilla del motor no se ven */
+
+/* ========== MOTOR: qué pantalla se muestra según el radio marcado ========== */
+.pantalla { display: none; }                          /* todas ocultas por defecto */
+.e-portada:checked ~ .sede .pantalla-portada,         /* ~ = hermano posterior del radio marcado */
+.e-form:checked    ~ .sede .pantalla-form,
+.e-v1:checked      ~ .sede .pantalla-v1,
+.e-v2:checked      ~ .sede .pantalla-v2,
+.e-v3:checked      ~ .sede .pantalla-v3,
+.e-final:checked   ~ .sede .pantalla-final,
+.e-epilogo:checked ~ .sede .pantalla-epilogo { display: block; }   /* solo se muestra la activa */
+
+/* ========== MOTOR: contenido que depende de la vuelta (l0, l1, l2) ========== */
+.lap-0:checked ~ .sede :is(.l1, .l2)        { display: none; }   /* vuelta 1: oculta lo de las demás */
+.lap-1:checked ~ .sede :is(.l0, .l2)        { display: none; }   /* vuelta 2 */
+.lap-2:checked ~ .sede :is(.l0, .l1)        { display: none; }   /* vuelta 3 */
+.lap-3:checked ~ .sede :is(.l0, .l1, .l2)   { display: none; }   /* final: no queda nada */
+
+/* ========== MARCO DE LA SEDE ========== */
+.sede { max-width: 62rem; margin: 0 auto; background: var(--papel); min-height: 100vh; }  /* hoja central */
+.cabecera { display: flex; gap: var(--esp); align-items: center; padding: var(--esp) 1.5rem; border-bottom: 4px solid var(--oro); }  /* franja dorada */
+.organismo { margin: 0; font-size: 1.25rem; }         /* nombre del ministerio */
+.sede-nombre { margin: 0; color: var(--gris); }       /* subtítulo */
+
+/* Escudo genérico dibujado solo con CSS */
+.escudo { width: 2.8rem; height: 3.3rem; background: var(--oro); position: relative; flex: none;
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }    /* forma de escudo */
+.escudo::after { content: ""; position: absolute; inset: 4px; background: var(--azul);
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }    /* interior azul */
+
+.menu { background: var(--azul); display: flex; flex-wrap: wrap; }  /* barra de menú */
+.menu a { color: #fff; padding: .7rem 1.2rem; text-decoration: none; }  /* opciones */
+.menu a:hover { background: var(--granate); }         /* resalte al pasar */
+.migas { margin: 0; padding: .6rem 1.5rem; font-size: .85rem; color: var(--gris); border-bottom: 1px solid var(--fondo); }  /* migas de pan */
+
+/* ========== CUERPO: contenido + lateral ========== */
+.cuerpo { display: grid; grid-template-columns: 1fr 16rem; gap: 2rem; padding: 1.5rem; }  /* dos columnas */
+main { min-width: 0; overflow-x: clip; }              /* recorta el botón cuando huye del contenedor */
+.lateral { border-left: 3px solid var(--fondo); padding-left: var(--esp); font-size: .9rem; }  /* aviso lateral */
+.lateral h2 { font-size: 1.05rem; margin: 0 0 .5rem; }  /* título del lateral */
+.estado-ok { color: var(--ok); font-weight: 700; margin: 0 0 var(--esp); }  /* texto verde */
+.estado-ok::before { content: ""; display: inline-block; width: .7rem; height: .7rem; border-radius: 50%; background: var(--ok); margin-right: .5rem; }  /* puntito verde */
+
+/* ========== BOTONES ========== */
+.boton { display: inline-block; padding: .7rem 1.4rem; background: var(--azul); color: #fff; border-radius: .25rem; font-weight: 600; cursor: pointer; transition: background .2s; }  /* aspecto de botón */
+.boton:hover { background: var(--granate); }          /* cambia al pasar el ratón */
+.boton.claro { background: transparent; color: var(--azul); border: 1px solid var(--azul); }  /* botón secundario */
+
+/* ========== FORMULARIO CONTRADICTORIO ========== */
+.campo { margin-bottom: var(--esp); }                 /* separación entre campos */
+.campo > label { display: block; font-weight: 600; margin-bottom: .25rem; }  /* etiqueta sobre el campo */
+.campo input[type="text"], .campo input[type="date"], .campo textarea { width: 100%; padding: .55rem; border: 1px solid var(--gris); border-radius: .25rem; font: inherit; }  /* campos a todo el ancho */
+.campo small { display: block; color: var(--gris); font-size: .85rem; margin-top: .25rem; }  /* ayudas */
+.campo:has(:invalid) small { color: var(--granate); }   /* :has() pinta la ayuda si el campo del padre es inválido */
+.campo input:invalid, .campo textarea:invalid { border-color: var(--granate); background: #fbf1f2; }  /* campo inválido en rojo */
+.marca label { font-weight: 400; }                    /* la casilla no va en negrita */
+.msg-sin-dni { display: none !important; }            /* oculto hasta marcar la casilla */
+.campo:has(#sin-dni:checked) .msg-sin-dni { display: block !important; color: var(--granate); font-weight: 600; }  /* aparece el mensaje circular */
+.devuelto { background: #fbf1f2; border-left: 4px solid var(--granate); padding: .6rem 1rem; }  /* aviso de expediente devuelto */
+
+/* ========== BOTÓN QUE HUYE ========== */
+.zona { min-height: 4rem; padding-top: .5rem; }       /* espacio donde corre el botón */
+.huye { transition: transform .35s ease, background .2s; }  /* movimiento suave */
+.huye .t2 { display: none; }                          /* texto alternativo oculto */
+.huye:hover .t1 { display: none; }                    /* al pasar el ratón desaparece "Enviar" */
+.huye:hover .t2 { display: inline; }                  /* y aparece "Quizá más tarde" o "Casi" */
+.huye.l0 { --huida: 7rem; }                           /* vuelta 1: huye lejos */
+.huye.l1 { --huida: 3.5rem; }                         /* vuelta 2: huye menos */
+.huye.l2 { --huida: 0rem; }                           /* vuelta 3: ya no huye, solo cambia el texto */
+.huye:hover { transform: translateX(var(--huida)); }  /* el desplazamiento depende de la vuelta */
+
+/* ========== DOCUMENTOS OFICIALES ========== */
+.resolucion { border: 2px solid var(--azul); padding: 1.25rem 1.5rem; margin-bottom: var(--esp); background: #f7f9fc; max-width: 40rem; }  /* aspecto de resolución sellada */
+.resolucion p:last-child { margin-bottom: 0; }        /* sin hueco al final */
+
+/* ========== COOKIES Y PIE ========== */
+.cookies { position: fixed; bottom: 0; left: 0; right: 0; background: var(--tinta); color: #fff; padding: .8rem 1.5rem; display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; z-index: 5; }  /* banner fijo */
+.cookies p { margin: 0; flex: 1 1 18rem; }            /* texto flexible */
+.cookies .boton.claro { color: #fff; border-color: #fff; }  /* botón claro visible sobre fondo oscuro */
+#cookies:checked ~ .sede .cookies { display: none; }  /* ambos botones marcan la casilla y lo ocultan */
+.pie { background: var(--fondo); padding: 1.5rem 1.5rem 5rem; font-size: .85rem; color: var(--gris); }  /* pie con espacio para el banner */
+.pie a { margin-right: 1.2rem; }                      /* separación entre enlaces */
+
+/* ========== MÓVIL: no existe :hover, el botón tiembla en su sitio ========== */
+@media (hover: none) {
+  .huye:hover { transform: none; }                    /* en táctil no huye al tocar */
+  .huye { animation: temblor 1.6s ease-in-out infinite; }  /* pero se balancea para ser difícil de pulsar */
+  .huye:hover .t1 { display: inline; }                /* el texto no cambia por el hover pegajoso */
+  .huye:hover .t2 { display: none; }
+}
+@keyframes temblor { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(1.5rem); } }  /* vaivén lateral */
+
+@media (max-width: 760px) {
+  .cuerpo { grid-template-columns: 1fr; }             /* una columna en pantallas estrechas */
+  .lateral { border-left: 0; padding-left: 0; border-top: 3px solid var(--fondo); padding-top: var(--esp); }  /* lateral debajo del contenido */
+}
+
+/* Respeta a quien pide menos movimiento */
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
